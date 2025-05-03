@@ -1,0 +1,40 @@
+/* Custom styles for the hero slider */
+.hero-slider .swiper-pagination {
+  bottom: 2rem !important;
+}
+
+.hero-slider .swiper-pagination-bullet {
+  width: 8px !important;
+  height: 8px !important;
+  background: rgba(0, 0, 0, 0.2) !important;
+  opacity: 1 !important;
+  margin: 0 5px !important;
+  transition: all 0.3s ease;
+}
+
+.hero-slider .swiper-pagination-bullet-active {
+  background: #000 !important;
+  transform: scale(1.2) !important;
+}
+
+.hero-slider .swiper-pagination-horizontal {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 4px !important;
+}
+
+/* Slide transition effects */
+.hero-slider .swiper-slide {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.hero-slider .swiper-slide-active {
+  opacity: 1;
+}
+
+/* Custom background transition */
+.hero-slider .swiper-slide {
+  transition: background-color 0.5s ease-in-out;
+}
