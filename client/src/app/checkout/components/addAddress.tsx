@@ -171,7 +171,7 @@
 import { DialogTrigger } from "@/components/ui/dialog"
 
 import { LoaderCircle, Plus } from "lucide-react"
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useCallback } from "react"
 import { z } from "zod"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -286,91 +286,181 @@ const AddAddress = () => {
     })
   }
 
-  const handlePlaceSelect = (place: google.maps.places.PlaceResult) => {
+  // const handlePlaceSelect = (place: google.maps.places.PlaceResult) => {
+  //   if (place.geometry && place.geometry.location) {
+  //     // Update the address state
+  //     setAddress({
+  //       formatted_address: place.formatted_address || "",
+  //       lat: place.geometry.location.lat(),
+  //       lng: place.geometry.location.lng(),
+  //     })
+
+  //     // Parse address components
+  //     const addressComponents = place.address_components || []
+  //     let street = ""
+  //     let city = ""
+  //     let state = ""
+  //     let postalCode = ""
+  //     let country = ""
+
+  //     for (const component of addressComponents) {
+  //       const types = component.types
+
+  //       if (types.includes("street_number")) {
+  //         street = component.long_name
+  //       } else if (types.includes("route")) {
+  //         street += street ? ` ${component.long_name}` : component.long_name
+  //       } else if (types.includes("locality")) {
+  //         city = component.long_name
+  //       } else if (types.includes("administrative_area_level_1")) {
+  //         state = component.long_name
+  //       } else if (types.includes("postal_code")) {
+  //         postalCode = component.long_name
+  //       } else if (types.includes("country")) {
+  //         country = component.long_name
+  //       }
+  //     }
+
+  //     // Update form fields
+  //     form.setValue("addressLine1", street)
+  //     form.setValue("city", city)
+  //     form.setValue("state", state)
+  //     form.setValue("postalCode", postalCode)
+  //     form.setValue("country", country)
+  //     form.setValue("formatted_address", place.formatted_address || "")
+  //     form.setValue("lat", place.geometry.location.lat())
+  //     form.setValue("lng", place.geometry.location.lng())
+  //   }
+  // }
+
+
+  const handlePlaceSelect = useCallback((place: google.maps.places.PlaceResult) => {
     if (place.geometry && place.geometry.location) {
       // Update the address state
       setAddress({
         formatted_address: place.formatted_address || "",
         lat: place.geometry.location.lat(),
         lng: place.geometry.location.lng(),
-      })
-
+      });
+  
       // Parse address components
-      const addressComponents = place.address_components || []
-      let street = ""
-      let city = ""
-      let state = ""
-      let postalCode = ""
-      let country = ""
-
+      const addressComponents = place.address_components || [];
+      let street = "";
+      let city = "";
+      let state = "";
+      let postalCode = "";
+      let country = "";
+  
       for (const component of addressComponents) {
-        const types = component.types
-
+        const types = component.types;
+  
         if (types.includes("street_number")) {
-          street = component.long_name
+          street = component.long_name;
         } else if (types.includes("route")) {
-          street += street ? ` ${component.long_name}` : component.long_name
+          street += street ? ` ${component.long_name}` : component.long_name;
         } else if (types.includes("locality")) {
-          city = component.long_name
+          city = component.long_name;
         } else if (types.includes("administrative_area_level_1")) {
-          state = component.long_name
+          state = component.long_name;
         } else if (types.includes("postal_code")) {
-          postalCode = component.long_name
+          postalCode = component.long_name;
         } else if (types.includes("country")) {
-          country = component.long_name
+          country = component.long_name;
         }
       }
-
+  
       // Update form fields
-      form.setValue("addressLine1", street)
-      form.setValue("city", city)
-      form.setValue("state", state)
-      form.setValue("postalCode", postalCode)
-      form.setValue("country", country)
-      form.setValue("formatted_address", place.formatted_address || "")
-      form.setValue("lat", place.geometry.location.lat())
-      form.setValue("lng", place.geometry.location.lng())
+      form.setValue("addressLine1", street);
+      form.setValue("city", city);
+      form.setValue("state", state);
+      form.setValue("postalCode", postalCode);
+      form.setValue("country", country);
+      form.setValue("formatted_address", place.formatted_address || "");
+      form.setValue("lat", place.geometry.location.lat());
+      form.setValue("lng", place.geometry.location.lng());
     }
-  }
-
+  }, [form, setAddress]);  // add any other dependencies if used inside
+  
+  
   const autocompleteRef = React.useRef<google.maps.places.Autocomplete | null>(null)
 
   // Get user's current location when the website opens
+  // useEffect(() => {
+  //   const getUserLocation = () => {
+  //     if (navigator.geolocation) {
+  //       navigator.geolocation.getCurrentPosition(
+  //         async (position) => {
+  //           const { latitude, longitude } = position.coords
+
+  //           try {
+  //             // Use Google Maps Geocoding API to get address from coordinates
+  //             const response = await fetch(
+  //               `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`,
+  //             )
+
+  //             const data = await response.json()
+
+  //             if (data.results && data.results.length > 0) {
+  //               const place = data.results[0]
+  //               handlePlaceSelect(place as google.maps.places.PlaceResult)
+  //             }
+  //           } catch (error) {
+  //             console.error("Error getting address from coordinates:", error)
+  //           }
+  //         },
+  //         (error) => {
+  //           console.error("Error getting user location:", error)
+  //         },
+  //       )
+  //     }
+  //   }
+
+  //   // Only request location when modal is opened
+  //   if (isModalOpen && isLoaded) {
+  //     getUserLocation()
+  //   }
+  // }, [isModalOpen, isLoaded])
+
+
+  // const handlePlaceSelect = useCallback((place: google.maps.places.PlaceResult) => {
+  //   // your logic here
+  // }, []);
+  
   useEffect(() => {
     const getUserLocation = () => {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           async (position) => {
-            const { latitude, longitude } = position.coords
-
+            const { latitude, longitude } = position.coords;
+  
             try {
-              // Use Google Maps Geocoding API to get address from coordinates
               const response = await fetch(
                 `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`,
-              )
-
-              const data = await response.json()
-
+              );
+  
+              const data = await response.json();
+  
               if (data.results && data.results.length > 0) {
-                const place = data.results[0]
-                handlePlaceSelect(place as google.maps.places.PlaceResult)
+                const place = data.results[0];
+                handlePlaceSelect(place as google.maps.places.PlaceResult);
               }
             } catch (error) {
-              console.error("Error getting address from coordinates:", error)
+              console.error("Error getting address from coordinates:", error);
             }
           },
           (error) => {
-            console.error("Error getting user location:", error)
+            console.error("Error getting user location:", error);
           },
-        )
+        );
       }
-    }
-
-    // Only request location when modal is opened
+    };
+  
     if (isModalOpen && isLoaded) {
-      getUserLocation()
+      getUserLocation();
     }
-  }, [isModalOpen, isLoaded])
+  }, [isModalOpen, isLoaded, handlePlaceSelect]);
+  
+  
 
   if (loadError) return <div>Error loading maps</div>
   if (!isLoaded) return <div>Loading maps...</div>

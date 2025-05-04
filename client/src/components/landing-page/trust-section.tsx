@@ -110,7 +110,10 @@ export function TrustSection() {
             viewport={{ once: true }}
             className="mt-4 text-gray-500 max-w-2xl mx-auto text-lg"
           >
-            We're committed to providing the best shopping experience with quality products and exceptional service.
+          <p>
+  We&apos;re committed to providing the best shopping experience with quality products and exceptional service.
+</p>
+
           </motion.p>
         </div>
 

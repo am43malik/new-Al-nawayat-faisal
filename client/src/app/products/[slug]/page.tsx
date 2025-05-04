@@ -745,7 +745,7 @@ export default function ProductDetailsPage() {
   if (!product)
     return (
       <>
-        <HeaderLanding logo={logo} />
+        <HeaderLanding />
         <div className="py-40 text-center">Product not found</div>
         <Footer />
       </>
@@ -753,7 +753,7 @@ export default function ProductDetailsPage() {
 
   return (
     <>
-      <HeaderLanding logo={logo} />
+      <HeaderLanding  />
       <div className="bg-white">
         <div className="container mx-auto px-4 py-6">
           {/* Back button */}

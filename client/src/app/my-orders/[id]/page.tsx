@@ -1188,14 +1188,17 @@ export default function OrderDetailsPage() {
     }
   }, [data])
 
-  const statusVariantMap = {
-    out_for_delivery: "secondary",
-    dispatch: "secondary",
-    delivered: "success",
-    cancelled: "destructive",
-    processing: "secondary",
-    pending: "warning",
-  }
+  const statusVariantMap: Record<string, 'soft' | 'outline'> = {
+    out_for_delivery: 'soft',
+    dispatch: 'soft',
+    delivered: 'soft',
+    cancelled: 'outline',
+    processing: 'soft',
+    pending: 'soft',
+  };
+  
+  
+
 
   const statusIconMap = {
     delivered: <CheckCircle className="h-5 w-5 text-green-500" />,
@@ -1255,7 +1258,9 @@ export default function OrderDetailsPage() {
             <CardHeader>
               <CardTitle>Order Not Found</CardTitle>
               <CardDescription>
-                We couldn't find the order you're looking for. It may have been removed or the ID is incorrect.
+              {/* <p>We couldn't find the order you're looking for. It may have been removed or the ID is incorrect.</p> */}
+              <p>We could&apos;t find the order you&apos;re looking for. It may have been removed or the ID is incorrect.</p>
+
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -1305,9 +1310,21 @@ export default function OrderDetailsPage() {
                 <p className="text-gray-500">
                   #{order.refId} • {formatDate(order.createdAt)}
                 </p>
-                <Badge variant={statusVariantMap[order.status.toLowerCase()] || "outline"} className="capitalize">
+                {/* <Badge variant={statusVariantMap[order.status.toLowerCase()] || "outline"} className="capitalize">
                   {order.status.replace(/_/g, " ")}
-                </Badge>
+                </Badge> */}
+         <Badge
+  variant={
+    statusVariantMap[
+      (order.status?.toLowerCase() as keyof typeof statusVariantMap) ?? 'undefined'
+    ] || 'outline'
+  }
+  className="capitalize"
+>
+  {order.status ? order.status.replace(/_/g, ' ') : 'Unknown'}
+</Badge>
+
+
               </div>
             </div>
             <Button
@@ -1330,7 +1347,13 @@ export default function OrderDetailsPage() {
                 <div className="relative">
                   <div className="flex items-center justify-between mb-6 p-4 bg-gray-50 rounded-lg border border-gray-100">
                     <div className="flex items-center gap-3">
-                      {statusIconMap[order.status.toLowerCase()] || <Clock className="h-5 w-5 text-gray-500" />}
+                      {/* {statusIconMap[order.status.toLowerCase()] || <Clock className="h-5 w-5 text-gray-500" />} */}
+                      {
+  statusIconMap[
+    (order.status?.toLowerCase() as keyof typeof statusIconMap)
+  ] || <Clock className="h-5 w-5 text-gray-500" />
+}
+
                       <span className="font-medium text-gray-900">{order.status.replace(/_/g, " ")}</span>
                     </div>
                     <span className="text-sm text-gray-500">Last updated: {formatDate(order.updatedAt)}</span>
@@ -1545,7 +1568,8 @@ export default function OrderDetailsPage() {
                     </div>
                     <div>
                       <Badge
-                        variant={order.isPaid ? "success" : "outline"}
+                       variant={order.isPaid ? 'soft' : 'outline'}
+
                         className="bg-green-100 text-green-800 hover:bg-green-200"
                       >
                         {order.isPaid ? "Paid" : "Unpaid"}

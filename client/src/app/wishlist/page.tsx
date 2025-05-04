@@ -11,7 +11,7 @@ import { removeFromWishlist, addToCart } from "@/redux/slice";
 import toast from "react-hot-toast";
 import logo from "@/public/logo.png";
 import { HeaderLanding } from "@/components/landing-page/header-landing";
-import Footer from "@/components/landing-page/footer";
+import {Footer} from "@/components/landing-page/footer";
 import { ProductData } from "@/types";
 
 const Page = () => {
@@ -21,7 +21,7 @@ const Page = () => {
   if (wishlistItems.length === 0) {
     return (
       <>
-        <HeaderLanding logo={logo} />
+        <HeaderLanding  />
         <div className="flex flex-col items-center justify-center py-12 text-center max-w-2xl mx-auto px-4 sm:px-6 lg:max-w-7xl lg:px-8">
           <Heart className="h-16 w-16 text-gray-300 mb-4" />
           <h3 className="text-xl font-medium mb-2">Your wishlist is empty</h3>
@@ -42,7 +42,7 @@ const Page = () => {
 
   return (
     <>
-      <HeaderLanding logo={logo} />
+      <HeaderLanding  />
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 max-w-2xl mx-auto px-4 sm:px-6 lg:max-w-7xl lg:px-8 py-6">
         {wishlistItems.map((item) => (
           <Card key={item.id} className="overflow-hidden">

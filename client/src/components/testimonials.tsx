@@ -64,9 +64,11 @@ export function Testimonials() {
             What Our Customers Say
           </h2>
           <p className="mt-4 text-gray-500 max-w-2xl mx-auto">
-            Don't just take our word for it. Here's what our happy customers have to say about their QuickMart
-            experience.
-          </p>
+  Don&apos;t just take our word for it. Here&apos;s what our happy customers have to say about their QuickMart
+  experience.
+</p>
+
+
         </div>
 
         <div className="relative max-w-4xl mx-auto">

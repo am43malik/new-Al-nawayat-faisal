@@ -205,7 +205,7 @@ import { Badge } from "@/components/ui/badge"
 import { useAppDispatch } from "@/redux/store"
 import { addToCart } from "@/redux/slice" // Make sure this action exists in your slice
 
-interface Product {
+ export interface Product {
   id: string
   name: string
   price: number
@@ -250,7 +250,7 @@ export function QuickViewModal({ product, children }: QuickViewModalProps) {
 
   const handleAddToCart = () => {
     dispatch(addToCart({
-      id: product.id,
+      _id: product.id,
       name: product.name,
       price: product.price,
       originalPrice: product.originalPrice,
@@ -259,7 +259,7 @@ export function QuickViewModal({ product, children }: QuickViewModalProps) {
       maxQuantity: product.stock,
       estimatedDelivery: product.deliveryEstimate,
       isAvailable: product.isAvailable
-    }))
+    } as any))
     setOpen(false)
   }
 

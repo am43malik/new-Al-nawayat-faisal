@@ -692,16 +692,17 @@ export default function OrdersPage() {
     }).format(date)
   }
 
-  const statusVariantMap = {
-    delivered: "success",
-    cancelled: "destructive",
-    in_transit: "secondary",
-    dispatch: "secondary",
-    out_for_delivery: "secondary",
-    returned: "warning",
-    refunded: "warning",
-    request_for_delivery: "destructive",
-  }
+  const statusVariantMap: Record<string, 'soft' | 'outline'> = {
+    delivered: "soft",
+    cancelled: "outline",
+    in_transit: "soft",
+    dispatch: "soft",
+    out_for_delivery: "soft",
+    returned: "outline",
+    refunded: "outline",
+    request_for_delivery: "outline",
+  };
+  
 
   return (
     <div className="flex min-h-screen flex-col bg-gray-50">
@@ -813,12 +814,17 @@ export default function OrdersPage() {
                               </div>
                             </TableCell>
                             <TableCell>
-                              <Badge
-                                variant={statusVariantMap[order.status.toLowerCase()] || "outline"}
-                                className="capitalize"
-                              >
-                                {order.status.replace(/_/g, " ")}
-                              </Badge>
+                            <Badge
+  variant={
+    statusVariantMap[
+      (order.status?.toLowerCase() as keyof typeof statusVariantMap)
+    ] || 'outline'
+  }
+  className="capitalize"
+>
+  {order.status ? order.status.replace(/_/g, ' ') : 'Unknown'}
+</Badge>
+
                             </TableCell>
                             <TableCell className="text-right font-medium">
                               ₹  {(order.totalAmount ?? 0).toFixed(2)}

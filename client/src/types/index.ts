@@ -63,6 +63,7 @@ export interface ProductData {
   _id: string;
   name: string;
   description: string;
+  price: number;
   categoryId: CategoryData;
   subCategoryId: SubCategory;
   createdBy: UserData;
@@ -72,7 +73,22 @@ export interface ProductData {
   isActive: boolean;
   isFeatured: boolean;
   featureImg: string;
-  images: string[];
+  image: string;
+  images:string[];
+  originalPrice?: number;
+  discount?: number;
+  rating: number;
+  ratingCount: number;
+  category: string;
+  stock: number;
+  deliveryEstimate ?: string;
+  isAvailable: boolean;
+  isNew?: boolean;
+  isBestSeller?: boolean;
+  isOrganic?: boolean;
+  maxQuantity?:number;
+  weight?: string;
+  unit?: string;
   variants: {
     quantity: number;
     sku: string;

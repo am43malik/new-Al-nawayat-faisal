@@ -550,7 +550,7 @@ export default function Home() {
 
   return (
     <div className="flex min-h-screen flex-col bg-white">
-      <HeaderLanding logo={logo} />
+      <HeaderLanding  />
 
       {/* Location Picker */}
       <div className="bg-green-50 py-2">
@@ -765,9 +765,10 @@ export default function Home() {
                     ))}
                   </div>
                   <p className="text-gray-600 mb-6">
-                    "The products arrived faster than expected and the quality was excellent. I'm very satisfied with my
-                    purchase and will definitely shop here again!"
-                  </p>
+  &quot;The products arrived faster than expected and the quality was excellent. I&apos;m very satisfied with my
+  purchase and will definitely shop here again!&quot;
+</p>
+
                   <div className="flex items-center gap-3">
                     <div className="h-12 w-12 rounded-full bg-gray-200 flex items-center justify-center">
                       <span className="text-gray-600 font-medium">{String.fromCharCode(64 + i)}</span>

@@ -16,7 +16,7 @@ export { default as Counter } from "./home/counter.svg";
 export { default as Docs } from "./home/docs.svg";
 export { default as CheckShape } from "./home/check-shape.svg";
 export { default as DocsCheck } from "./duel-tone/docs-check.svg";
-export { default as Doc₹ row } from "./duel-tone/docs-arrow.svg";
+export { default as Docsarow } from "./duel-tone/docs-arrow.svg";
 export { default as Spam } from "./home/spam.svg";
 export { default as Stacks } from "./home/stack.svg";
 export { default as CheckMark } from "./home/check-mark.svg";

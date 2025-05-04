@@ -1228,7 +1228,7 @@ export default function ProductsPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
-      <HeaderLanding logo={logo} />
+      <HeaderLanding  />
 
       <div className="container mx-auto px-4 py-8 flex-grow">
         {/* Breadcrumb */}
@@ -1342,8 +1342,10 @@ export default function ProductsPage() {
                 </div>
                 <h3 className="text-xl font-medium text-gray-900 mb-2">No products found</h3>
                 <p className="text-gray-500 mb-6 max-w-md mx-auto">
-                  Try adjusting your search or filter criteria to find what you're looking for
-                </p>
+  Try adjusting your search or filter criteria to find what you&apos;re looking for
+</p>
+
+
                 <Button onClick={resetFilters} className="bg-green-600 hover:bg-green-700 text-white">
                   Clear filters
                 </Button>
@@ -1376,7 +1378,7 @@ export default function ProductsPage() {
                     ) : (
                       <Button
                         key={`page-${page}`}
-                        variant={currentPage === page ? "default" : "outline"}
+                        variant={currentPage === page ? "soft" : "outline"}
                         size="sm"
                         onClick={() => typeof page === "number" && setPage(page)}
                         disabled={isLoading || isFetching}

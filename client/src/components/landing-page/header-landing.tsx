@@ -816,7 +816,7 @@ type Address = {
   };
 };
 
-export function HeaderLanding({ logo }: HeaderProps) {
+export function HeaderLanding() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [showMobileSearch, setShowMobileSearch] = useState(false);
   const [categories, setCategories] = useState<CategoryData[]>([]);
@@ -952,7 +952,7 @@ export function HeaderLanding({ logo }: HeaderProps) {
               <MapPin className="h-4 w-4 text-emerald-600" />
               <span>Delivering to <span className="font-medium">{address.area}</span></span>
               <Button 
-                variant="link" 
+                variant="outline" 
                 className="h-auto p-0 text-emerald-600"
                 onClick={() => setShowLocationDialog(true)}
               >
@@ -961,7 +961,7 @@ export function HeaderLanding({ logo }: HeaderProps) {
             </div>
           ) : (
             <Button 
-              variant="link" 
+              variant="outline" 
               className="h-auto p-0 text-emerald-600 flex items-center gap-1"
               onClick={() => setShowLocationDialog(true)}
             >

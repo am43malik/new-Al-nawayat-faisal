@@ -28,7 +28,7 @@ const Page = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
-      <HeaderLanding logo={logo} />
+      <HeaderLanding  />
       <div className="container px-4 md:px-6 py-8">
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
           {categories.length > 0 &&

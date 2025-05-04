@@ -113,7 +113,7 @@ export default function Page() {
       name: category?.name,
       status: category?.status,
     });
-  }, [category]);
+  }, [category,form]);
 
   const { mutate, isPending } = useMutation({
     mutationKey: ["updateBrand"],

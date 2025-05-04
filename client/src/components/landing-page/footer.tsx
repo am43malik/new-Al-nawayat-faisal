@@ -263,9 +263,10 @@ export function Footer() {
               <span className="font-bold text-xl text-white">QuickMart</span>
             </div>
             <p className="text-gray-400 mb-6 leading-relaxed">
-              Your one-stop shop for daily essentials and groceries delivered at lightning speed. We're committed to
-              bringing fresh, quality products to your doorstep in minutes.
-            </p>
+  Your one-stop shop for daily essentials and groceries delivered at lightning speed. We&apos;re committed to
+  bringing fresh, quality products to your doorstep in minutes.
+</p>
+
             <div className="flex space-x-4 mb-8">
               {socialLinks.map((link, index) => (
                 <Link

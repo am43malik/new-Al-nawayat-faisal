@@ -44,7 +44,7 @@ export default function Page() {
       setProfile(data);
       setUserData(data);
     }
-  }, [data]);
+  }, [data,setUserData]);
 
   const handleEditClick = () => {
     setIsEditing(true);
@@ -68,7 +68,7 @@ export default function Page() {
 
   return (
     <div className="bg-white">
-      <HeaderLanding logo={logo} />
+      <HeaderLanding  />
       <div className="container mx-auto py-8 px-4">
         {isEditing ? (
           <ProfileUpdate

@@ -350,7 +350,7 @@ export default function Page() {
   if (items.length === 0) {
     return (
       <>
-        <HeaderLanding logo={logo} />
+        <HeaderLanding  />
         <div className="min-h-[80vh] flex flex-col items-center justify-center px-4">
           <ShoppingBag className="h-16 w-16 text-gray-400 mb-4" />
           <h2 className="text-2xl font-semibold text-gray-900 mb-2">
@@ -373,7 +373,7 @@ export default function Page() {
 
   return (
     <>
-      <HeaderLanding logo={logo} />
+      <HeaderLanding />
 
       <div className="min-h-screen bg-white">
         <div className="container mx-auto px-4 py-8">

@@ -866,7 +866,7 @@ export default function CategoryPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
-      <HeaderLanding logo={logo} />
+      <HeaderLanding  />
 
       <main className="flex-grow">
         {/* Breadcrumb */}

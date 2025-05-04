@@ -142,7 +142,7 @@ export default function Page() {
       status: subCategory?.status,
       categoryId: subCategory?.categoryId._id,
     });
-  }, [subCategory]);
+  }, [subCategory,form]);
 
   const { mutate, isPending } = useMutation({
     mutationKey: ["updateSubCategory"],

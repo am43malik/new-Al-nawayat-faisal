@@ -432,6 +432,7 @@ import logo from "@/public/logo.png";
 import { HeaderLanding } from "@/components/landing-page/header-landing";
 import { Footer } from "@/components/landing-page/footer";
 import { Textarea } from "@/components/ui/textarea";
+import { AnyARecord } from "dns";
 
 const addressSchema = z.object({
   formatted_address: z.string(),
@@ -439,24 +440,41 @@ const addressSchema = z.object({
   lng: z.number(),
 });
 
+
 const formSchema = z.object({
-  address: addressSchema,
+  address:addressSchema ,
   paymentMode: z.enum(["online", "cash"], {
     required_error: "You need to select a payment mode type.",
   }),
   deliveryInstructions: z.string().optional(),
 });
 
+type FormValues = {
+  address: {
+    formatted_address: string;
+    lat: number;
+    lng: number;
+  };
+  paymentMode: "online" | "cash";
+  deliveryInstructions?: string;
+};
+
 const Page = () => {
   const [currentStep, setCurrentStep] = useState("customer");
   const [couponCode, setCouponCode] = useState("");
   const couponInputRef = useRef(null);
   
-  const customerForm = useForm({
-    resolver: zodResolver(formSchema),
+  const customerForm = useForm<FormValues>({
+    resolver: zodResolver(formSchema), // Use the full form schema here
     defaultValues: {
-      deliveryInstructions: "",
-    }
+      address: {
+        formatted_address: "", // default empty string for formatted_address
+        lat: 0, // default 0 for lat
+        lng: 0, // default 0 for lng
+      },
+      paymentMode: "online", // default payment mode
+      deliveryInstructions: "", // default empty string for deliveryInstructions
+    },
   });
 
   const { UserData } = useAuth();
@@ -465,14 +483,84 @@ const Page = () => {
 
   const { items, total } = useAppSelector((state) => state.cart);
 
-  const selectedAddress = customerForm.getValues("address");
+  const selectedAddress = customerForm.getValues("address") || { formatted_address: "", lat: 0, lng: 0 };
+
+  type OrderPayload = {
+    paymentMethod: "online" | "cash";
+    paymentIntent: string;
+    totalAmount: number;
+    address: {
+      formatted_address: string;
+      lat: number;
+      lng: number;
+    };
+    deliveryInstructions?: string;
+    deliveryCharges: number;
+    discount: number;
+    taxes: number;
+    details: {
+      productId: string;
+      quantity: number;
+      price: number;
+      total: number;
+      attributes: any;
+    }[];
+  };
+  
+
+  // const { mutate, isPending } = useMutation({
+  //   mutationKey: ["createOrder"],
+  //   mutationFn: async (data) => {
+  //     const idempotencyKey = idempotencyKeyRef.current
+  //       ? idempotencyKeyRef.current
+  //       : (idempotencyKeyRef.current = uuidv4() + UserData?._id);
+  //     return await createOrderUser(data, idempotencyKey);
+  //   },
+  //   retry: 3,
+  //   onSuccess: (data) => {
+  //     router.push(
+  //       `/payment?reference=${data.data.refId}&orderId=${data.data.orderId}&success=true`
+  //     );
+  //   },
+  //   onError(error) {
+  //     if (error instanceof AxiosError) {
+  //       toast.error(error.response?.data.errors[0].msg);
+  //     } else {
+  //       toast.error("Something went wrong!");
+  //     }
+  //   },
+  // });
+
+  // const handlePlaceOrder = (data) => {
+  //   mutate({
+  //     paymentMethod: customerForm.getValues("paymentMode"),
+  //     paymentIntent: "",
+  //     totalAmount: total,
+  //     address: {
+  //       formatted_address: selectedAddress.formatted_address,
+  //       lat: selectedAddress.lat,
+  //       lng: selectedAddress.lng,
+  //     },
+  //     deliveryInstructions: data.deliveryInstructions,
+  //     deliveryCharges: 0,
+  //     discount: 0,
+  //     taxes: 0,
+  //     details: items.map((item) => ({
+  //       productId: item.productId,
+  //       quantity: item.quantity,
+  //       price: item.price,
+  //       total: item.total,
+  //       attributes: item.attributes,
+  //     })),
+  //   });
+  // };
 
   const { mutate, isPending } = useMutation({
     mutationKey: ["createOrder"],
-    mutationFn: async (data) => {
+    mutationFn: async (data: OrderPayload) => {
       const idempotencyKey = idempotencyKeyRef.current
         ? idempotencyKeyRef.current
-        : (idempotencyKeyRef.current = uuidv4() + UserData?._id);
+        : (idempotencyKeyRef.current = uuidv4() + (UserData?._id || ""));
       return await createOrderUser(data, idempotencyKey);
     },
     retry: 3,
@@ -483,22 +571,25 @@ const Page = () => {
     },
     onError(error) {
       if (error instanceof AxiosError) {
-        toast.error(error.response?.data.errors[0].msg);
+        const msg = error.response?.data?.errors?.[0]?.msg || "An error occurred.";
+        toast.error(msg);
       } else {
         toast.error("Something went wrong!");
       }
     },
   });
-
-  const handlePlaceOrder = (data) => {
+  
+  const handlePlaceOrder = (data: FormValues) => {
+    const { address = { formatted_address: "", lat: 0, lng: 0 }, paymentMode } = customerForm.getValues();
+  
     mutate({
-      paymentMethod: customerForm.getValues("paymentMode"),
+      paymentMethod: paymentMode,
       paymentIntent: "",
       totalAmount: total,
       address: {
-        formatted_address: selectedAddress.formatted_address,
-        lat: selectedAddress.lat,
-        lng: selectedAddress.lng,
+        formatted_address: address.formatted_address,
+        lat: address.lat,
+        lng: address.lng,
       },
       deliveryInstructions: data.deliveryInstructions,
       deliveryCharges: 0,
@@ -513,8 +604,9 @@ const Page = () => {
       })),
     });
   };
+  
 
-  const handleCouponValidation = (e) => {
+  const handleCouponValidation = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     
     if (!couponCode.trim()) {
@@ -526,7 +618,7 @@ const Page = () => {
     toast.success("Coupon applied successfully!");
   };
 
-  const goToStep = (step) => {
+  const goToStep = (step:string) => {
     setCurrentStep(step);
   };
 
@@ -543,7 +635,7 @@ const Page = () => {
 
   return (
     <>
-      <HeaderLanding logo={logo} />
+      <HeaderLanding />
       <div className="min-h-screen bg-gray-50">
         <div className="max-w-6xl mx-auto px-4 py-8 sm:px-6">
           <h1 className="text-3xl font-semibold text-gray-900 mb-6">Checkout</h1>
