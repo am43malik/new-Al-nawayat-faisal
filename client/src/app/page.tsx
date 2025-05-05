@@ -1514,7 +1514,7 @@ export default function Home() {
             </svg>
             <span className="text-xs mt-1">Orders</span>
           </Link>
-          <Link href="/account" className="flex flex-col items-center justify-center text-gray-500">
+          <Link href="/login" className="flex flex-col items-center justify-center text-gray-500">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-6 w-6"
