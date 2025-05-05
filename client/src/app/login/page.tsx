@@ -11,6 +11,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import LoginForm from "@/components/login-form";
+// import {LoginForm} from "@/components/login-form";
 
 const Page = () => {
   return (
